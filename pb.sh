@@ -14,5 +14,14 @@ PB_BUILD_DIR=/tmp/pb/${1}
 
 # Apply patches (if series file)
 
-# Run steps of build
 
+
+# Run steps of build
+setupStep setup
+executeStep $stepSetup
+
+setupStep build
+executeStep $stepBuild
+
+setupStep install
+executeStep $stepInstall

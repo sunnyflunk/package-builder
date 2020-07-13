@@ -8,3 +8,8 @@ export ymlSources=( "https://github.com/madler/zlib/archive/v1.2.11.tar.gz" )
 export ymlSha256sums=( "629380c90a77b964d896ed37163f5c3a34f6e6d897311f1df2a7016355c45eff" )
 export ymlSummary="Zlib package"
 export ymlDescription="zlib is a general purpose data compression library. All the code is thread safe."
+
+export stepEnvironment="echo 'Environment working'"
+export stepSetup="./configure --prefix=/usr --libdir=/usr/lib64"
+export stepBuild="make -j3"
+export stepInstall="make install DESTDIR=/tmp/pb/installdir"

@@ -79,3 +79,44 @@ function extractSource()
 
     tar xf "${1}" -C . || serpentFail "Failed to extract ${1}"
 }
+
+# Setup step with required environment variables
+function setupStep()
+{
+    [ ! -z "${1}" ] || serpentFail "Incorrect use of executeStep"
+    printInfo "Begin step: ${1}"
+
+    cd "${PB_WORKDIR}"
+    tmpFiles=$(ls | tr ' ' '/n' | wc -l)
+    [ ${tmpFiles} == 1 ] && cd $(ls)
+
+    # Setup flag creations
+    export CFLAGS=
+    export CXXFLAGS=
+    export LDFLAGS=
+    export FFLAGS=
+    export FCFLAGS=
+    export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+    export workdir=
+    export package=$ymlName
+    export release=$ymlRelease
+    export version=$ymlVersion
+    export sources=$PB_SOURCES_DIR
+    export pkgfiles=
+    export installdir=$PB_INSTALLDIR
+    # For autotools
+    export LT_SYS_LIBRARY_PATH=/usr/lib64
+    export CC=gcc
+    export CXX=g++
+    export TERM=dumb
+    export SOURCE_DATA_EPOCH=
+
+    eval "${stepEnvironment}"
+}
+
+
+function executeStep()
+{
+    echo "${@}"
+    eval "${@}"
+}
