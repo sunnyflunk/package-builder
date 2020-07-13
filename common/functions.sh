@@ -91,11 +91,11 @@ function setupStep()
     [ ${tmpFiles} == 1 ] && cd $(ls)
 
     # Setup flag creations
-    export CFLAGS=
-    export CXXFLAGS=
-    export LDFLAGS=
-    export FFLAGS=
-    export FCFLAGS=
+    export CFLAGS=${_CFLAGS}
+    export CXXFLAGS=${_CXXFLAGS}
+    export LDFLAGS=${_LDFLAGS}
+    export FFLAGS=${_FFFLAGS}
+    export FCFLAGS=${_FCFLAGS}
     export PATH=/usr/bin:/bin:/usr/sbin:/sbin
     export workdir=
     export package=$ymlName
@@ -106,8 +106,8 @@ function setupStep()
     export installdir=$PB_INSTALLDIR
     # For autotools
     export LT_SYS_LIBRARY_PATH=/usr/lib64
-    export CC=gcc
-    export CXX=g++
+    export CC="${_CC}"
+    export CXX="${_CXX}"
     export TERM=dumb
     export SOURCE_DATA_EPOCH=
 

@@ -9,8 +9,9 @@ PB_BUILD_DIR=/tmp/pb/${1}
 . ${executionPath}/common/defaults-yml.sh
 . ${PB_TESTFILES_DIR}/${1}.sh
 
-# Layout execution steps
+# Layout execution steps and flags
 . ${executionPath}/common/setup-build.sh
+. ${executionPath}/common/flags.sh
 
 # Apply patches (if series file)
 
