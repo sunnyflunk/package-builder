@@ -97,7 +97,7 @@ function setupStep()
     export FFLAGS=${_FFFLAGS}
     export FCFLAGS=${_FCFLAGS}
     export PATH=/usr/bin:/bin:/usr/sbin:/sbin
-    export workdir=
+    export workdir=$(pwd)
     export package=$ymlName
     export release=$ymlRelease
     export version=$ymlVersion
@@ -111,7 +111,7 @@ function setupStep()
     export TERM=dumb
     export SOURCE_DATA_EPOCH=
 
-    eval "${stepEnvironment}"
+    eval "${stepEnvironment[@]}"
 }
 
 
