@@ -14,6 +14,17 @@ if [[ "$tuneSamplepgo" == true ]]; then
     [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fno-profile-sample-accurate" || _CFLAGS="${_CFLAGS} -profile-partial-training"
 fi
 [[ "$buildDebug" == true ]] && _CFLAGS="${_CFLAGS} -g -feliminate-unused-debug-types"
+
+# Add PGO flags if present
+if [[ "$PGO_STEP" == "stage1" ]]; then
+    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-generate=${PB_PGO_DIR}/IR" || _CFLAGS="${_CFLAGS} -fprofile-generate -fprofile-dir=${PB_PGO_DIR}"
+fi
+if [[ "$PGO_STEP" == "stage2" ]]; then
+    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-use=${PB_PGO_DIR}/ir.profdata -fcs-profile-generate=${PB_PGO_DIR}/CS"
+fi
+if [[ "$PGO_STEP" == "build" ]]; then
+    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-use=${PB_PGO_DIR}/combined.profdata" || _CFLAGS="${_CFLAGS} -fprofile-use -fprofile-dir=${PB_PGO_DIR} -fprofile-correction"
+fi
 _CXXFLAGS="$_CFLAGS"
 _FCFLAGS="$_CFLAGS"
 _FFFLAGS="$_CFLAGS"

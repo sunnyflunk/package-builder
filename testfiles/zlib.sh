@@ -12,4 +12,5 @@ export ymlDescription="zlib is a general purpose data compression library. All t
 export stepEnvironment="echo 'Environment working'"
 export stepSetup="./configure --prefix=/usr --libdir=/usr/lib64"
 export stepBuild="make -j3"
+export stepProfile="make -j3 check"
 export stepInstall="make install DESTDIR=$PB_INSTALLDIR"
