@@ -14,8 +14,3 @@ mkdir -p "${PB_PGO_DIR}" || serpentFail "Failed to create pgo directory"
 for source in ${!ymlSources[@]}; do
     downloadSource ${ymlSources[$source]} ${ymlSha256sums[$source]}
 done
-
-# Extract source
-pushd ${PB_WORKDIR}
-    extractSource ${PB_SOURCES_DIR}/`basename ${ymlSources[0]}`
-popd

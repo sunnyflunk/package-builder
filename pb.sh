@@ -18,7 +18,7 @@ PB_BUILD_DIR=/tmp/pb/${1}
 
 
 [[ ! -z $stepProfile ]] && PGO_STEP=stage1
-. ${executionPath}/common/flags.sh
+freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
 
 # Run steps of build
 setupStep setup
@@ -28,12 +28,12 @@ setupStep build
 executeStep $stepBuild
 
 if [[ ! -z $stepProfile ]]; then
-    setupStep profile
+    setupStep profile-$PGO_STEP
     executeStep $stepProfile
 
     if [[ "$buildClang" == true ]]; then
         PGO_STEP=stage2
-        . ${executionPath}/common/flags.sh
+        freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
 
         # Merge PGO info
         llvm-profdata merge -output=${PB_PGO_DIR}/ir.profdata ${PB_PGO_DIR}/IR/default*.profraw
@@ -44,7 +44,7 @@ if [[ ! -z $stepProfile ]]; then
         setupStep build
         executeStep $stepBuild
 
-        setupStep profile
+        setupStep profile-$PGO_STEP
         executeStep $stepProfile
 
         # Merge PGO info
@@ -52,7 +52,8 @@ if [[ ! -z $stepProfile ]]; then
     fi
 
     PGO_STEP=build
-    . ${executionPath}/common/flags.sh
+    freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
+
     setupStep setup
     executeStep $stepSetup
 

@@ -80,6 +80,15 @@ function extractSource()
     tar xf "${1}" -C . || serpentFail "Failed to extract ${1}"
 }
 
+function freshBuildEnvironment()
+{
+    . ${executionPath}/common/flags.sh
+    rm -rf "${PB_WORKDIR}"/* || serpentFail "Failed to clean workdir directory"
+    pushd ${PB_WORKDIR}
+        extractSource ${PB_SOURCES_DIR}/`basename ${ymlSources[0]}`
+    popd
+}
+
 # Setup step with required environment variables
 function setupStep()
 {
