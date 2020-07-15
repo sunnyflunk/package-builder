@@ -71,6 +71,7 @@ if [[ "$build32bit" == true ]]; then
     printInfo "Starting 32bit Build"
     BUILD32=true
     buildProcess || serpentFail "Failed to build 32bit version"
+    rm -rf "${PB_PGO_DIR}"/* || serpentFail "Failed to clean pgo directory"
     unset BUILD32
 fi
 printInfo "Starting 64bit Build"
