@@ -38,8 +38,13 @@ _LDFLAGS="-Wl,-O2,-z,max-page-size=0x1000,--sort-common"
 [[ "$tuneLdclean" == true && "$buildClang" == true ]] && _LDFLAGS="${_LDFLAGS} -Wl,--gc-sections,--icf=safe"
 [[ "$tuneRunpath" == true ]] && _LDFLAGS="${_LDFLAGS} -Wl,--enable-new-dtags"
 
-[[ "$buildClang" == true ]] && _CC=clang || _CC=gcc
-[[ "$buildClang" == true ]] && _CXX=clang++ || _CXX=g++
+if [[ "$BUILD32" == true ]]; then
+    [[ "$buildClang" == true ]] && _CC="clang -m32" || _CC="gcc -m32"
+    [[ "$buildClang" == true ]] && _CXX="clang++ -m32" || _CXX="g++ -m32"
+else
+    [[ "$buildClang" == true ]] && _CC=clang || _CC=gcc
+    [[ "$buildClang" == true ]] && _CXX=clang++ || _CXX=g++
+fi
 [[ "$buildClang" == true ]] && _AR=llvm-ar || _AR=gcc-ar
 [[ "$buildClang" == true ]] && _NM=llvm-nm || _NM=gcc-nm
 [[ "$buildClang" == true ]] && _RANLIB=llvm-ranlib || _RANLIB=gcc-ranlib
@@ -47,4 +52,4 @@ _LDFLAGS="-Wl,-O2,-z,max-page-size=0x1000,--sort-common"
 echo ${_CFLAGS}
 echo ${_LDFLAGS}
 
-_LIBDIR=/usr/lib64
+[[ "$BUILD32" == true ]] && _LIBDIR=/usr/lib32 || _LIBDIR=/usr/lib64

@@ -87,6 +87,7 @@ function freshBuildEnvironment()
     pushd ${PB_WORKDIR}
         extractSource ${PB_SOURCES_DIR}/`basename ${ymlSources[0]}`
     popd
+    . ${executionPath}/testfiles/${ymlName}.sh
 }
 
 # Setup step with required environment variables

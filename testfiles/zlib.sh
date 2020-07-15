@@ -9,8 +9,10 @@ export ymlSha256sums=( "629380c90a77b964d896ed37163f5c3a34f6e6d897311f1df2a70163
 export ymlSummary="Zlib package"
 export ymlDescription="zlib is a general purpose data compression library. All the code is thread safe."
 
+export build32bit=true
+
 export stepEnvironment="echo 'Environment working'"
-export stepSetup="./configure --prefix=/usr --libdir=/usr/lib64"
+export stepSetup="./configure --prefix=/usr --libdir=${_LIBDIR}"
 export stepBuild="make -j3"
 export stepProfile="make -j3 check"
 export stepInstall="make install DESTDIR=$PB_INSTALLDIR"

@@ -10,6 +10,7 @@ export ymlSha256sums=
 export ymlSummary=
 export ymlDescription=
 
+export build32bit=false
 export buildClang=false
 export buildDebug=false
 export buildStrip=true

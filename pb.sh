@@ -16,50 +16,59 @@ PB_BUILD_DIR=/tmp/pb/${1}
 # Apply patches (if series file)
 
 
+function buildProcess()
+{
+    [[ ! -z $stepProfile ]] && PGO_STEP=stage1
+    freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
 
-[[ ! -z $stepProfile ]] && PGO_STEP=stage1
-freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
+    # Run steps of build
+    setupStep setup
+    executeStep $stepSetup
 
-# Run steps of build
-setupStep setup
-executeStep $stepSetup
+    setupStep build
+    executeStep $stepBuild
 
-setupStep build
-executeStep $stepBuild
+    if [[ ! -z $stepProfile ]]; then
+        setupStep profile-$PGO_STEP
+        executeStep $stepProfile
 
-if [[ ! -z $stepProfile ]]; then
-    setupStep profile-$PGO_STEP
-    executeStep $stepProfile
+        if [[ "$buildClang" == true ]]; then
+            PGO_STEP=stage2
+            freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
 
-    if [[ "$buildClang" == true ]]; then
-        PGO_STEP=stage2
+            # Merge PGO info
+            llvm-profdata merge -output=${PB_PGO_DIR}/ir.profdata ${PB_PGO_DIR}/IR/default*.profraw
+
+            setupStep setup
+            executeStep $stepSetup
+
+            setupStep build
+            executeStep $stepBuild
+
+            setupStep profile-$PGO_STEP
+            executeStep $stepProfile
+
+            # Merge PGO info
+            llvm-profdata merge -output=${PB_PGO_DIR}/combined.profdata ${PB_PGO_DIR}/ir.profdata ${PB_PGO_DIR}/CS/default*.profraw
+        fi
+
+        PGO_STEP=build
         freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
-
-        # Merge PGO info
-        llvm-profdata merge -output=${PB_PGO_DIR}/ir.profdata ${PB_PGO_DIR}/IR/default*.profraw
 
         setupStep setup
         executeStep $stepSetup
 
         setupStep build
         executeStep $stepBuild
-
-        setupStep profile-$PGO_STEP
-        executeStep $stepProfile
-
-        # Merge PGO info
-        llvm-profdata merge -output=${PB_PGO_DIR}/combined.profdata ${PB_PGO_DIR}/ir.profdata ${PB_PGO_DIR}/CS/default*.profraw
     fi
 
-    PGO_STEP=build
-    freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
+    setupStep install
+    executeStep $stepInstall
+}
 
-    setupStep setup
-    executeStep $stepSetup
 
-    setupStep build
-    executeStep $stepBuild
+if [[ "$build32bit" == true ]]; then
+    BUILD32=true
+    buildProcess || serpentFail "Failed to build 32bit version"
 fi
-
-setupStep install
-executeStep $stepInstall
+buildProcess
