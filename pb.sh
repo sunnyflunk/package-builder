@@ -6,6 +6,7 @@ PB_BUILD_DIR=/tmp/pb/${1}
 # Import used functions, dir variables, yml defaults and the building package
 . ${executionPath}/common/functions.sh
 . ${executionPath}/common/variables.sh
+. ${executionPath}/common/macros.sh
 . ${executionPath}/common/defaults-yml.sh
 . ${PB_TESTFILES_DIR}/${1}.sh
 

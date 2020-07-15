@@ -29,6 +29,11 @@ _LDFLAGS="-Wl,-O2,-z,max-page-size=0x1000,--sort-common"
 
 [[ "$buildClang" == true ]] && _CC=clang || _CC=gcc
 [[ "$buildClang" == true ]] && _CXX=clang++ || _CXX=g++
+[[ "$buildClang" == true ]] && _AR=llvm-ar || _AR=gcc-ar
+[[ "$buildClang" == true ]] && _NM=llvm-nm || _NM=gcc-nm
+[[ "$buildClang" == true ]] && _RANLIB=llvm-ranlib || _RANLIB=gcc-ranlib
 
 echo ${_CFLAGS}
 echo ${_LDFLAGS}
+
+_LIBDIR=/usr/lib64

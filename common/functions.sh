@@ -104,10 +104,14 @@ function setupStep()
     export sources=$PB_SOURCES_DIR
     export pkgfiles=
     export installdir=$PB_INSTALLDIR
+    export libdir=${_LIBDIR}
     # For autotools
-    export LT_SYS_LIBRARY_PATH=/usr/lib64
+    export LT_SYS_LIBRARY_PATH=${_LIBDIR}
     export CC="${_CC}"
     export CXX="${_CXX}"
+    export AR="${_AR}"
+    export NM="${_NM}"
+    export RANLIB="${_RANLIB}"
     export TERM=dumb
     export SOURCE_DATA_EPOCH=
 
