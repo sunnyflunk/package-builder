@@ -75,3 +75,18 @@ if [[ "$build32bit" == true ]]; then
 fi
 printInfo "Starting 64bit Build"
 buildProcess
+
+printInfo "Examine and create the packages"
+pushd "${PB_INSTALLDIR}"
+    find -type f,l | sed 's|^./||' | xargs sha256sum > files.yml
+    abireport scan-tree .
+    echo $ymlName > metadata.yml
+    echo $ymlVersion >> metadata.yml
+    echo $ymlRelease >> metadata.yml
+    echo $ymlLicense >> metadata.yml
+    echo $ymlSources >> metadata.yml
+    echo $ymlSha256sums >> metadata.yml
+    echo $ymlSummary >> metadata.yml
+    echo $ymlDescription >> metadata.yml
+    tar --zstd -cf ../$ymlName.tar.zst *
+popd
