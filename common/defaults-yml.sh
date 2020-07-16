@@ -25,6 +25,7 @@ export tuneSymbolic=true
 export tuneRunpath=false
 export tuneLdclean=true
 export tuneLto=false
+export tuneNocommon=true
 export tuneNoplt=true
 export tuneMath=false
 export tuneHardened=false
