@@ -7,6 +7,7 @@ mkdir -p "${PB_BUILD_DIR}" || serpentFail "Failed to create build directory"
 mkdir -p "${PB_WORKDIR}" || serpentFail "Failed to create workdir directory"
 mkdir -p "${PB_INSTALLDIR}" || serpentFail "Failed to create installdir directory"
 mkdir -p "${PB_PGO_DIR}" || serpentFail "Failed to create pgo directory"
+mkdir -p "${PB_PGO_DIR}-32" || serpentFail "Failed to create pgo-32 directory"
 
 # PM fetch and install dependencies
 

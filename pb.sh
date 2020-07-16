@@ -37,7 +37,7 @@ function buildProcess()
             freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
 
             # Merge PGO info
-            llvm-profdata merge -output=${PB_PGO_DIR}/ir.profdata ${PB_PGO_DIR}/IR/default*.profraw
+            llvm-profdata merge -output=${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/IR/default*.profraw
 
             setupStep setup
             executeStep $stepSetup
@@ -49,7 +49,7 @@ function buildProcess()
             executeStep $stepProfile
 
             # Merge PGO info
-            llvm-profdata merge -output=${PB_PGO_DIR}/combined.profdata ${PB_PGO_DIR}/ir.profdata ${PB_PGO_DIR}/CS/default*.profraw
+            llvm-profdata merge -output=${_PB_PGO_DIR}/combined.profdata ${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/CS/default*.profraw
         fi
 
         PGO_STEP=build
@@ -71,7 +71,6 @@ if [[ "$build32bit" == true ]]; then
     printInfo "Starting 32bit Build"
     BUILD32=true
     buildProcess || serpentFail "Failed to build 32bit version"
-    rm -rf "${PB_PGO_DIR}"/* || serpentFail "Failed to clean pgo directory"
     unset BUILD32
 fi
 printInfo "Starting 64bit Build"

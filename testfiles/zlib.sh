@@ -10,6 +10,7 @@ export ymlSummary="Zlib package"
 export ymlDescription="zlib is a general purpose data compression library. All the code is thread safe."
 
 export build32bit=true
+export buildClang=true
 
 export stepEnvironment="echo 'Environment working'"
 export stepSetup="./configure --prefix=/usr --libdir=${_LIBDIR}"

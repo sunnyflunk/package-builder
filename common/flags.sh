@@ -2,6 +2,8 @@
 
 # Assemble the correct FLAGS from set variables
 
+[[ "$BUILD32" == true ]] && _PB_PGO_DIR="${PB_PGO_DIR}-32" || _PB_PGO_DIR="${PB_PGO_DIR}"
+
 [[ "$tunePerformance" == true ]] && _CFLAGS="-march=haswell" || _CFLAGS="-march=haswell -mprefer-vector-width=128"
 [[ "$tuneOptimize" == true ]] && _CFLAGS="${_CFLAGS} -O3" || _CFLAGS="${_CFLAGS} -Oz -ffunction-sections -fdata-sections"
 [[ "$tuneOptimize" == true && "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -mllvm -polly"
@@ -17,13 +19,13 @@ fi
 
 # Add PGO flags if present
 if [[ "$PGO_STEP" == "stage1" ]]; then
-    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-generate=${PB_PGO_DIR}/IR" || _CFLAGS="${_CFLAGS} -fprofile-generate -fprofile-dir=${PB_PGO_DIR}"
+    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-generate=${_PB_PGO_DIR}/IR" || _CFLAGS="${_CFLAGS} -fprofile-generate -fprofile-dir=${_PB_PGO_DIR}"
 fi
 if [[ "$PGO_STEP" == "stage2" ]]; then
-    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-use=${PB_PGO_DIR}/ir.profdata -fcs-profile-generate=${PB_PGO_DIR}/CS"
+    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-use=${_PB_PGO_DIR}/ir.profdata -fcs-profile-generate=${_PB_PGO_DIR}/CS"
 fi
 if [[ "$PGO_STEP" == "build" ]]; then
-    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-use=${PB_PGO_DIR}/combined.profdata" || _CFLAGS="${_CFLAGS} -fprofile-use -fprofile-dir=${PB_PGO_DIR} -fprofile-correction"
+    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-use=${_PB_PGO_DIR}/combined.profdata" || _CFLAGS="${_CFLAGS} -fprofile-use -fprofile-dir=${_PB_PGO_DIR} -fprofile-correction"
 fi
 _CXXFLAGS="$_CFLAGS"
 _FCFLAGS="$_CFLAGS"
@@ -51,5 +53,3 @@ fi
 
 echo ${_CFLAGS}
 echo ${_LDFLAGS}
-
-[[ "$BUILD32" == true ]] && _LIBDIR=/usr/lib32 || _LIBDIR=/usr/lib64
