@@ -3,6 +3,7 @@
 # Assemble the correct FLAGS from set variables
 
 [[ "$BUILD32" == true ]] && _PB_PGO_DIR="${PB_PGO_DIR}-32" || _PB_PGO_DIR="${PB_PGO_DIR}"
+[[ "$BUILD32" == true ]] && _LIBDIR=/usr/lib32 || _LIBDIR=/usr/lib64
 
 [[ "$tunePerformance" == true ]] && _CFLAGS="-march=haswell" || _CFLAGS="-march=haswell -mprefer-vector-width=128"
 [[ "$tuneOptimize" == true ]] && _CFLAGS="${_CFLAGS} -O3" || _CFLAGS="${_CFLAGS} -Oz -ffunction-sections -fdata-sections"

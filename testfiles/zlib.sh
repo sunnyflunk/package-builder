@@ -13,7 +13,7 @@ export build32bit=true
 export buildClang=true
 
 export stepEnvironment="echo 'Environment working'"
-export stepSetup="./configure --prefix=/usr --libdir=${_LIBDIR}"
-export stepBuild="make -j3"
-export stepProfile="make -j3 check"
-export stepInstall="make install DESTDIR=$PB_INSTALLDIR"
+export stepSetup="$cmdConfigure_min"
+export stepBuild="$cmdMake"
+export stepProfile="$cmdMake check"
+export stepInstall="$cmdMake_install"
