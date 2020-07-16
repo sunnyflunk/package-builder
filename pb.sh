@@ -79,14 +79,15 @@ buildProcess
 printInfo "Examine and create the packages"
 pushd "${PB_INSTALLDIR}"
     find -type f,l | sed 's|^./||' | xargs sha256sum > files.yml
+    cat files.yml | grep -v files.yml$ > files1.yml
+    mv files1.yml files.yml
     abireport scan-tree .
-    echo $ymlName > metadata.yml
-    echo $ymlVersion >> metadata.yml
-    echo $ymlRelease >> metadata.yml
-    echo $ymlLicense >> metadata.yml
-    echo $ymlSources >> metadata.yml
-    echo $ymlSha256sums >> metadata.yml
-    echo $ymlSummary >> metadata.yml
-    echo $ymlDescription >> metadata.yml
+    echo "Name: $ymlName" > metadata.yml
+    echo "Version: $ymlVersion" >> metadata.yml
+    echo "Release: $ymlRelease" >> metadata.yml
+    echo "License: $ymlLicense" >> metadata.yml
+    echo "Summary: $ymlSummary" >> metadata.yml
+    echo "Description: $ymlDescription" >> metadata.yml
+    cp ${PB_TESTFILES_DIR}/${1}.sh .
     tar --zstd -cf ../$ymlName.tar.zst *
 popd
