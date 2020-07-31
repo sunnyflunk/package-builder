@@ -13,7 +13,7 @@ _CFLAGS="${_CFLAGS} -pipe -D_FORTIFY_SOURCE=2 -fPIC -fomit-frame-pointer -Wall -
 [[ "$tuneLto" == true ]] && _CFLAGS="${_CFLAGS} -flto"
 [[ "$tuneNoplt" == true && "$tuneBindnow" == true ]] && _CFLAGS="${_CFLAGS} -fno-plt"
 [[ "$tuneMath" == true ]] && _CFLAGS="${_CFLAGS} -fno-math-errno -fno-trapping-math"
-[[ "$tuneNocommon" == true ]] && _CFLAGS="${_CFLAGS} -fno-common" || _CFLAGS="${_CFLAGS} -fcommon"
+[[ "$tuneCommon" == true ]] && _CFLAGS="${_CFLAGS} -fcommon" || _CFLAGS="${_CFLAGS} -fno-common"
 if [[ "$tuneSamplepgo" == true ]]; then
     [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fno-profile-sample-accurate" || _CFLAGS="${_CFLAGS} -profile-partial-training"
 fi
