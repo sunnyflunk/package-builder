@@ -52,6 +52,8 @@ fi
 [[ "$buildClang" == true ]] && _AR=llvm-ar || _AR=gcc-ar
 [[ "$buildClang" == true ]] && _NM=llvm-nm || _NM=gcc-nm
 [[ "$buildClang" == true ]] && _RANLIB=llvm-ranlib || _RANLIB=gcc-ranlib
+[[ "$buildClang" == true ]] && _STRIP=llvm-strip || _STRIP=strip
+[[ "$buildClang" == true ]] && _OBJCOPY=llvm-objcopy || _OBJCOPY=objcopy
 
 echo ${_CFLAGS}
 echo ${_LDFLAGS}

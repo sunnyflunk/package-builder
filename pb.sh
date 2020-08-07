@@ -78,6 +78,20 @@ buildProcess
 
 printInfo "Examine and create the packages"
 pushd "${PB_INSTALLDIR}"
+    elfFILES=$(find -type f -exec file {} \; | grep -i elf | cut -d: -f1)
+    for elf in $elfFILES; do
+        if [[ "$buildDebug" == true ]]; then
+            ${_OBJCOPY} --compress-debug-sections=zlib --only-keep-debug ${elf} ${elf}.debug
+            ${_OBJCOPY} --add-gnu-debuglink=${elf}.debug ${elf}
+            [[ -d ${PB_INSTALLDIR}/usr/lib/debug/$(dirname ${elf}.debug) ]] || mkdir -p ${PB_INSTALLDIR}/usr/lib/debug/$(dirname ${elf}.debug)
+            mv ${elf}.debug ${PB_INSTALLDIR}/usr/lib/debug/${elf}.debug
+        fi
+
+        if [[ "$buildStrip" == true ]]; then
+            ${_STRIP} -S --strip-unneeded --remove-section=.comment $elf
+        fi
+    done
+
     find -type f,l | sed 's|^./||' | xargs sha256sum > files.yml
     cat files.yml | grep -v files.yml$ > files1.yml
     mv files1.yml files.yml
@@ -91,3 +105,5 @@ pushd "${PB_INSTALLDIR}"
     cp ${PB_TESTFILES_DIR}/${1}.sh .
     tar --zstd -cf ../$ymlName.tar.zst *
 popd
+
+[[ ! -z $stepProfile ]] && printInfo "PGO dir is $(du -sh ${_PB_PGO_DIR} | cut -f1)"

@@ -12,7 +12,7 @@ export ymlDescription=
 
 export build32bit=false
 export buildClang=false
-export buildDebug=false
+export buildDebug=true
 export buildStrip=true
 export buildCcache=false
 export buildNetworking=false
