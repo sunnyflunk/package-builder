@@ -36,7 +36,7 @@ This lists all of the variables one can use in the packaging format.
 | tuneBindnow     | Adds `-Wl,-z,relro,-z,now` to LDFLAGS              | true                   |
 | tuneSymbolic    | Adds `-Wl,-Bsymbolic-functions` to LDFLAGS         | true                   |
 | tuneRunpath     | Adds `-Wl,--enable-new-dtags` to LDFLAGS           | false                  |
-| tuneLdclean     | Adds `-Wl,--gc-sections,--icf=safe` to LDFLAGS     | true (with buildClang) |
+| tuneIcf         | Adds `-Wl,--icf=safe` to LDFLAGS                   | true (with buildClang) |
 | tuneLto         | Enables LTO build                                  | false                  |
 | tuneCommon      | Adds `-fcommon` to FLAGS                           | false                  |
 | tuneNoplt       | Adds `-fno-plt` to FLAGS                           | true (with Bindnow)    |

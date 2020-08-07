@@ -35,11 +35,11 @@ _FFFLAGS="$_CFLAGS"
 _CFLAGS="$_CFLAGS -Wformat -Wformat-security"
 
 # pic/pie/lto should be part of _LDFLAGS
-_LDFLAGS="-Wl,-O2,-z,max-page-size=0x1000,--sort-common"
+_LDFLAGS="-Wl,-O2,-z,max-page-size=0x1000,--sort-common,--gc-sections"
 [[ "$tuneBindnow" == true ]] && _LDFLAGS="${_LDFLAGS} -Wl,-z,relro,-z,now"
 [[ "$tuneAsneeded" == true ]] && _LDFLAGS="${_LDFLAGS} -Wl,--as-needed"
 [[ "$tuneSymbolic" == true ]] && _LDFLAGS="${_LDFLAGS} -Wl,-Bsymbolic-functions"
-[[ "$tuneLdclean" == true && "$buildClang" == true ]] && _LDFLAGS="${_LDFLAGS} -Wl,--gc-sections,--icf=safe"
+[[ "$tuneIcf" == true && "$buildClang" == true ]] && _LDFLAGS="${_LDFLAGS} -Wl,--icf=safe"
 [[ "$tuneRunpath" == true ]] && _LDFLAGS="${_LDFLAGS} -Wl,--enable-new-dtags"
 
 if [[ "$BUILD32" == true ]]; then
