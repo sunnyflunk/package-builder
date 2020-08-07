@@ -12,6 +12,8 @@ export ymlDescription="zlib is a general purpose data compression library. All t
 export build32bit=true
 export buildClang=true
 
+export tuneLto=true
+
 export stepEnvironment="echo 'Environment working'"
 export stepSetup="$cmdConfigure_min"
 export stepBuild="$cmdMake"

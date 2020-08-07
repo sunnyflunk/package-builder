@@ -26,6 +26,7 @@ export tuneSymbolic=true
 export tuneRunpath=false
 export tuneIcf=true
 export tuneLto=false
+export tuneLtoextra=true
 export tuneCommon=false
 export tuneNoplt=true
 export tuneMath=false

@@ -32,13 +32,14 @@ This lists all of the variables one can use in the packaging format.
 | :-------------- | :------------------------------------------------- | ---------------------: |
 | tunePerformance | Unsets `-mprefer-vector-width=128`                 | false                  |
 | tuneOptimize    | Tunes for performance (otherwise size)             | true                   |
-| tunePolly       | Adds `-mllvm -polly` to flags (with Clang)         | true                   |
+| tunePolly       | Adds `-mllvm -polly` to flags                      | true (with Clang)      |
 | tuneAsneeded    | Adds `-Wl,--as-needed` to LDFLAGS                  | true                   |
 | tuneBindnow     | Adds `-Wl,-z,relro,-z,now` to LDFLAGS              | true                   |
 | tuneSymbolic    | Adds `-Wl,-Bsymbolic-functions` to LDFLAGS         | true                   |
 | tuneRunpath     | Adds `-Wl,--enable-new-dtags` to LDFLAGS           | false                  |
-| tuneIcf         | Adds `-Wl,--icf=safe` to LDFLAGS (with Clang)      | true                   |
+| tuneIcf         | Adds `-Wl,--icf=safe` to LDFLAGS                   | true (with Clang)      |
 | tuneLto         | Enables LTO build                                  | false                  |
+| tuneLtoextra    | Adds extra FLAGS to help with LTO performance      | true (with Lto)        |
 | tuneCommon      | Adds `-fcommon` to FLAGS                           | false                  |
 | tuneNoplt       | Adds `-fno-plt` to FLAGS                           | true (with Bindnow)    |
 | tuneMath        | Adds `-fno-math-errno -fno-trapping-math` to FLAGS | false                  |

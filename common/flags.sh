@@ -11,6 +11,9 @@
 _CFLAGS="${_CFLAGS} -pipe -D_FORTIFY_SOURCE=2 -fPIC -fomit-frame-pointer -Wall -Wno-error -Wp,-D_REENTRANT"
 [[ "$tuneHarden" == true ]] && _CFLAGS="${_CFLAGS} -fstack-protector-strong -fstack-clash-protection -fpie --param ssp-buffer-size=4" || _CFLAGS="${_CFLAGS} -fstack-protector --param ssp-buffer-size=32"
 [[ "$tuneLto" == true ]] && _CFLAGS="${_CFLAGS} -flto"
+if [[ "$tuneLto" == true && "$tuneLtoextra" == true ]]; then
+    [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fwhole-program-vtables -fvirtual-function-elimination" || _CFLAGS="${_CFLAGS} -fdevirtualize-at-ltrans -fno-semantic-interposition"
+fi
 [[ "$tuneNoplt" == true && "$tuneBindnow" == true ]] && _CFLAGS="${_CFLAGS} -fno-plt"
 [[ "$tuneMath" == true ]] && _CFLAGS="${_CFLAGS} -fno-math-errno -fno-trapping-math"
 [[ "$tuneCommon" == true ]] && _CFLAGS="${_CFLAGS} -fcommon" || _CFLAGS="${_CFLAGS} -fno-common"
