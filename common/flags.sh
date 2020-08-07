@@ -7,7 +7,7 @@
 
 [[ "$tunePerformance" == true ]] && _CFLAGS="-march=haswell" || _CFLAGS="-march=haswell -mprefer-vector-width=128"
 [[ "$tuneOptimize" == true ]] && _CFLAGS="${_CFLAGS} -O3" || _CFLAGS="${_CFLAGS} -Oz -ffunction-sections -fdata-sections"
-[[ "$tuneOptimize" == true && "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -mllvm -polly"
+[[ "$tunePolly" == true && "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -mllvm -polly"
 _CFLAGS="${_CFLAGS} -pipe -D_FORTIFY_SOURCE=2 -fPIC -fomit-frame-pointer -Wall -Wno-error -Wp,-D_REENTRANT"
 [[ "$tuneHarden" == true ]] && _CFLAGS="${_CFLAGS} -fstack-protector-strong -fstack-clash-protection -fpie --param ssp-buffer-size=4" || _CFLAGS="${_CFLAGS} -fstack-protector --param ssp-buffer-size=32"
 [[ "$tuneLto" == true ]] && _CFLAGS="${_CFLAGS} -flto"

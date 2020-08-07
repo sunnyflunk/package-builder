@@ -19,6 +19,7 @@ export buildNetworking=false
 
 export tunePerformance=false
 export tuneOptimize=true
+export tunePolly=true
 export tuneAsneeded=true
 export tuneBindnow=true
 export tuneSymbolic=true
