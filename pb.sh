@@ -7,7 +7,7 @@ PB_BUILD_DIR=/tmp/pb/${1}
 . ${executionPath}/common/functions.sh
 . ${executionPath}/common/variables.sh
 . ${executionPath}/common/macros.sh
-. ${executionPath}/common/defaults-yml.sh
+. ${executionPath}/configs/${2}.sh
 . ${PB_TESTFILES_DIR}/${1}.sh
 validateBuildfile
 

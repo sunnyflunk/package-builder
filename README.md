@@ -8,7 +8,7 @@ Clone the repo and run a package build. To build zlib simply:
 ```
 git clone https://github.com/sunnyflunk/package-builder.git
 cd package-builder
-./pb.sh zlib
+./pb.sh zlib serpent-default
 ```
 
 ## Requirements

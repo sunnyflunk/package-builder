@@ -1,6 +1,9 @@
 #!/bin/true
 
-# Exporting default build variables
+SERPENT_BUILD_JOBS=$(nproc)
+SERPENT_ARCH="x86_64"
+SERPENT_TRIPLET="x86_64-serpent-linux-musl"
+
 build32bit=false
 buildClang=false
 buildDebug=true
