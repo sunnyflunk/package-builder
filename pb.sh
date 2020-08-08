@@ -63,6 +63,9 @@ function buildProcess()
 
     [[ ! -z $stepInstall ]] && setupStep install-$BUILD_STAGE
     [[ ! -z $stepInstall ]] && executeStep $stepInstall
+
+    [[ ! -z $stepCheck ]] && setupStep check
+    [[ ! -z $stepCheck ]] && executeStep $stepCheck
 }
 
 
