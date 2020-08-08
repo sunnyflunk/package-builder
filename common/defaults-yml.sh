@@ -1,41 +1,41 @@
 #!/bin/true
 
 # Exporting default build variables
-export ymlName=
-export ymlVersion=
-export ymlRelease=
-export ymlLicense=
-export ymlSources=
-export ymlSha256sums=
-export ymlSummary=
-export ymlDescription=
+ymlName=
+ymlVersion=
+ymlRelease=
+ymlLicense=
+ymlSources=
+ymlSha256sums=
+ymlSummary=
+ymlDescription=
 
-export build32bit=false
-export buildClang=false
-export buildDebug=true
-export buildStrip=true
-export buildCcache=false
-export buildNetworking=false
+build32bit=false
+buildClang=false
+buildDebug=true
+buildStrip=true
+buildCcache=false
+buildNetworking=false
 
-export tunePerformance=false
-export tuneOptimize=true
-export tunePolly=true
-export tuneAsneeded=true
-export tuneBindnow=true
-export tuneSymbolic=true
-export tuneRunpath=false
-export tuneIcf=true
-export tuneLto=false
-export tuneLtoextra=true
-export tuneCommon=false
-export tuneNoplt=true
-export tuneMath=false
-export tuneHardened=false
-export tuneSamplepgo=false
+tunePerformance=false
+tuneOptimize=true
+tunePolly=true
+tuneAsneeded=true
+tuneBindnow=true
+tuneSymbolic=true
+tuneRunpath=false
+tuneIcf=true
+tuneLto=false
+tuneLtoextra=true
+tuneCommon=false
+tuneNoplt=true
+tuneMath=false
+tuneHardened=false
+tuneSamplepgo=false
 
-export stepEnvironment=
-export stepSetup=
-export stepBuild=
-export stepInstall=
-export stepCheck=
-export stepProfile=
+stepEnvironment=
+stepSetup=
+stepBuild=
+stepInstall=
+stepCheck=
+stepProfile=
