@@ -18,52 +18,51 @@ PB_BUILD_DIR=/tmp/pb/${1}
 
 function buildProcess()
 {
-    [[ ! -z $stepProfile ]] && PGO_STEP=stage1
-    freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
-
     # Run steps of build
-    setupStep setup
-    executeStep $stepSetup
-
-    setupStep build
-    executeStep $stepBuild
-
     if [[ ! -z $stepProfile ]]; then
-        setupStep profile-$PGO_STEP
+        BUILD_STAGE=stage1
+        freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
+
+        [[ ! -z $stepSetup ]] && setupStep setup-$BUILD_STAGE
+        [[ ! -z $stepSetup ]] && executeStep $stepSetup
+
+        [[ ! -z $stepBuild ]] && setupStep build-$BUILD_STAGE
+        [[ ! -z $stepBuild ]] && executeStep $stepBuild
+
+        setupStep profile-$BUILD_STAGE
         executeStep $stepProfile
 
+        # Merge PGO info
+        llvm-profdata merge -output=${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/IR/default*.profraw
+
         if [[ "$buildClang" == true ]]; then
-            PGO_STEP=stage2
+            BUILD_STAGE=stage2
             freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
 
-            # Merge PGO info
-            llvm-profdata merge -output=${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/IR/default*.profraw
+            [[ ! -z $stepSetup ]] && setupStep setup-$BUILD_STAGE
+            [[ ! -z $stepSetup ]] && executeStep $stepSetup
 
-            setupStep setup
-            executeStep $stepSetup
+            [[ ! -z $stepBuild ]] && setupStep build-$BUILD_STAGE
+            [[ ! -z $stepBuild ]] && executeStep $stepBuild
 
-            setupStep build
-            executeStep $stepBuild
-
-            setupStep profile-$PGO_STEP
+            setupStep profile-$BUILD_STAGE
             executeStep $stepProfile
 
             # Merge PGO info
             llvm-profdata merge -output=${_PB_PGO_DIR}/combined.profdata ${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/CS/default*.profraw
         fi
-
-        PGO_STEP=build
-        freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
-
-        setupStep setup
-        executeStep $stepSetup
-
-        setupStep build
-        executeStep $stepBuild
     fi
+    freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
+    BUILD_STAGE=final
 
-    setupStep install
-    executeStep $stepInstall
+    [[ ! -z $stepSetup ]] && setupStep setup-$BUILD_STAGE
+    [[ ! -z $stepSetup ]] && executeStep $stepSetup
+
+    [[ ! -z $stepBuild ]] && setupStep build-$BUILD_STAGE
+    [[ ! -z $stepBuild ]] && executeStep $stepBuild
+
+    [[ ! -z $stepInstall ]] && setupStep install-$BUILD_STAGE
+    [[ ! -z $stepInstall ]] && executeStep $stepInstall
 }
 
 
@@ -91,7 +90,7 @@ pushd "${PB_INSTALLDIR}"
     [[ -f pkg-dbg ]] && makePkg -dbg
     [[ -f pkg-dbg32 ]] && makePkg -dbg32
     mkdir ${ymlName}; mv usr ${ymlName}/
-    makePkg
+    [[ -d ${ymlName}/usr ]] && makePkg
 popd
 
 [[ ! -z $stepProfile ]] && printInfo "PGO dir is $(du -sh ${_PB_PGO_DIR} | cut -f1)"

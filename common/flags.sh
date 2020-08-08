@@ -23,13 +23,13 @@ fi
 [[ "$buildDebug" == true ]] && _CFLAGS="${_CFLAGS} -g -feliminate-unused-debug-types"
 
 # Add PGO flags if present
-if [[ "$PGO_STEP" == "stage1" ]]; then
+if [[ "$BUILD_STAGE" == "stage1" ]]; then
     [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-generate=${_PB_PGO_DIR}/IR" || _CFLAGS="${_CFLAGS} -fprofile-generate -fprofile-dir=${_PB_PGO_DIR}"
 fi
-if [[ "$PGO_STEP" == "stage2" ]]; then
+if [[ "$BUILD_STAGE" == "stage2" ]]; then
     [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-use=${_PB_PGO_DIR}/ir.profdata -fcs-profile-generate=${_PB_PGO_DIR}/CS"
 fi
-if [[ "$PGO_STEP" == "build" ]]; then
+if [[ "$BUILD_STAGE" == "final" ]]; then
     [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fprofile-use=${_PB_PGO_DIR}/combined.profdata" || _CFLAGS="${_CFLAGS} -fprofile-use -fprofile-dir=${_PB_PGO_DIR} -fprofile-correction"
 fi
 _CXXFLAGS="$_CFLAGS"
