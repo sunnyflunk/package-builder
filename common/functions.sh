@@ -66,7 +66,7 @@ function downloadSource()
 
     if [[ -f "${sourcePath}" ]]; then
         printInfo "Skipping download of ${sourcePathBase}"
-        verifyDownload "${1}"
+        verifyDownload "${1}" "${2}"
         return
     fi
 
