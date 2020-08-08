@@ -9,6 +9,7 @@ PB_BUILD_DIR=/tmp/pb/${1}
 . ${executionPath}/common/macros.sh
 . ${executionPath}/common/defaults-yml.sh
 . ${PB_TESTFILES_DIR}/${1}.sh
+validateBuildfile
 
 # Layout execution steps and flags
 . ${executionPath}/common/setup-build.sh
@@ -64,8 +65,10 @@ function buildProcess()
     [[ ! -z $stepInstall ]] && setupStep install-$BUILD_STAGE
     [[ ! -z $stepInstall ]] && executeStep $stepInstall
 
-    [[ ! -z $stepCheck ]] && setupStep check
-    [[ ! -z $stepCheck ]] && executeStep $stepCheck
+    if [[ ! -z $stepCheck ]]; then
+        setupStep check
+        executeStep $stepCheck
+    fi
 }
 
 
@@ -78,6 +81,7 @@ fi
 printInfo "Starting 64bit Build"
 buildProcess
 
+[[ "$(ls -A ${PB_INSTALLDIR})" ]] || serpentFail "No files installed to ${PB_INSTALLDIR}"
 printInfo "Examine and create the packages"
 pushd "${PB_INSTALLDIR}"
     debugAndstrip

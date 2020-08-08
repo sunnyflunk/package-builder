@@ -202,3 +202,15 @@ function makePkg()
     popd
     [[ -f pkg${pkgSuffix} ]] && rm pkg${pkgSuffix}
 }
+
+function validateBuildfile()
+{
+    [[ -z $ymlName ]] && serpentFail "ymlName not set in build file"
+    [[ -z $ymlVersion ]] && serpentFail "ymlVersion not set in build file"
+    [[ -z $ymlRelease ]] && serpentFail "ymlRelease not set in build file"
+    [[ -z $ymlLicense ]] && serpentFail "ymlLicense not set in build file"
+    [[ -z $ymlSources ]] && serpentFail "ymlSources not set in build file"
+    [[ -z $ymlSha256sums ]] && serpentFail "ymlSha256sums not set in build file"
+    [[ -z $ymlSummary ]] && serpentFail "ymlSummary not set in build file"
+    [[ -z $ymlDescription ]] && serpentFail "ymlDescription not set in build file"
+}

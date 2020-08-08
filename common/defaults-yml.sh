@@ -1,15 +1,6 @@
 #!/bin/true
 
 # Exporting default build variables
-ymlName=
-ymlVersion=
-ymlRelease=
-ymlLicense=
-ymlSources=
-ymlSha256sums=
-ymlSummary=
-ymlDescription=
-
 build32bit=false
 buildClang=false
 buildDebug=true
@@ -32,10 +23,3 @@ tuneNoplt=true
 tuneMath=false
 tuneHardened=false
 tuneSamplepgo=false
-
-stepEnvironment=
-stepSetup=
-stepBuild=
-stepInstall=
-stepCheck=
-stepProfile=
