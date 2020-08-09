@@ -5,7 +5,8 @@ SERPENT_ARCH="x86_64"
 SERPENT_TRIPLET="x86_64-serpent-linux-musl"
 
 build32bit=false
-buildClang=false
+buildClang=true
+buildPgo2=true
 buildDebug=true
 buildStrip=true
 buildCcache=false

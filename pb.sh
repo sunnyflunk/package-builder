@@ -34,9 +34,13 @@ function buildProcess()
         executeStep $stepProfile
 
         # Merge PGO info
-        llvm-profdata merge -output=${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/IR/default*.profraw
+        if [[ "$buildPgo2" == true ]]; then
+            llvm-profdata merge -output=${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/IR/default*.profraw
+        else
+            llvm-profdata merge -output=${_PB_PGO_DIR}/combined.profdata ${_PB_PGO_DIR}/IR/default*.profraw
+        fi
 
-        if [[ "$buildClang" == true ]]; then
+        if [[ "$buildClang" == true && "$buildPgo2" == true ]]; then
             BUILD_STAGE=stage2
             freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
 

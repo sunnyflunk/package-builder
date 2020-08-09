@@ -20,7 +20,8 @@ This lists all of the variables one can use in the packaging format.
 | Variable        | What it does                             | Default value    |
 | :-------------- | :--------------------------------------- | ---------------: |
 | build32bit      | Adds 32bit build                         | false            |
-| buildClang      | Uses Clang compiler                      | false            |
+| buildClang      | Uses Clang compiler                      | true             |
+| buildPgo2       | Enables 2 stage PGO with clang           | true             |
 | buildDebug      | Add debug flags to build                 | false            |
 | buildStrip      | Strips binary files at end of build      | true             |
 | buildCcache     | Enables ccache in build                  | false            |
