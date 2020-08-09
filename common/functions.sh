@@ -133,6 +133,63 @@ function setupStep()
     eval "${stepEnvironment[@]}"
 }
 
+function buildProcess()
+{
+    # Run steps of build
+    if [[ ! -z $stepProfile ]]; then
+        BUILD_STAGE=stage1
+        freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
+
+        [[ ! -z $stepSetup ]] && setupStep setup-$BUILD_STAGE
+        [[ ! -z $stepSetup ]] && executeStep $stepSetup
+
+        [[ ! -z $stepBuild ]] && setupStep build-$BUILD_STAGE
+        [[ ! -z $stepBuild ]] && executeStep $stepBuild
+
+        setupStep profile-$BUILD_STAGE
+        executeStep $stepProfile
+
+        # Merge PGO info
+        if [[ "$buildPgo2" == true ]]; then
+            llvm-profdata merge -output=${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/IR/default*.profraw
+        else
+            llvm-profdata merge -output=${_PB_PGO_DIR}/combined.profdata ${_PB_PGO_DIR}/IR/default*.profraw
+        fi
+
+        if [[ "$buildClang" == true && "$buildPgo2" == true ]]; then
+            BUILD_STAGE=stage2
+            freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
+
+            [[ ! -z $stepSetup ]] && setupStep setup-$BUILD_STAGE
+            [[ ! -z $stepSetup ]] && executeStep $stepSetup
+
+            [[ ! -z $stepBuild ]] && setupStep build-$BUILD_STAGE
+            [[ ! -z $stepBuild ]] && executeStep $stepBuild
+
+            setupStep profile-$BUILD_STAGE
+            executeStep $stepProfile
+
+            # Merge PGO info
+            llvm-profdata merge -output=${_PB_PGO_DIR}/combined.profdata ${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/CS/default*.profraw
+        fi
+    fi
+    freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
+    BUILD_STAGE=final
+
+    [[ ! -z $stepSetup ]] && setupStep setup-$BUILD_STAGE
+    [[ ! -z $stepSetup ]] && executeStep $stepSetup
+
+    [[ ! -z $stepBuild ]] && setupStep build-$BUILD_STAGE
+    [[ ! -z $stepBuild ]] && executeStep $stepBuild
+
+    [[ ! -z $stepInstall ]] && setupStep install-$BUILD_STAGE
+    [[ ! -z $stepInstall ]] && executeStep $stepInstall
+
+    if [[ ! -z $stepCheck ]]; then
+        setupStep check
+        executeStep $stepCheck
+    fi
+}
 
 function executeStep()
 {
@@ -177,6 +234,14 @@ function splitPkgs()
     find -type f,l -wholename */usr/lib32/pkgconfig/*.pc | sed 's|^./||' >> pkg-dev32
     find -type f -name *.debug | grep -v /lib32/ | sed 's|^./||' >> pkg-dbg
     find -type f,l -wholename */usr/lib32/* -name *.debug  | sed 's|^./||' >> pkg-dbg32
+
+    [[ -f pkg-dev ]] && makePkg -dev
+    [[ -f pkg-32 ]] && makePkg -32
+    [[ -f pkg-dev32 ]] && makePkg -dev32
+    [[ -f pkg-dbg ]] && makePkg -dbg
+    [[ -f pkg-dbg32 ]] && makePkg -dbg32
+    mkdir ${ymlName}; mv usr ${ymlName}/
+    [[ -d ${ymlName}/usr ]] && makePkg
 }
 
 function makePkg()
