@@ -20,7 +20,7 @@ fi
 if [[ "$tuneSamplepgo" == true ]]; then
     [[ "$buildClang" == true ]] && _CFLAGS="${_CFLAGS} -fno-profile-sample-accurate" || _CFLAGS="${_CFLAGS} -profile-partial-training"
 fi
-[[ "$buildDebug" == true ]] && _CFLAGS="${_CFLAGS} -g -feliminate-unused-debug-types"
+[[ "$buildDebug" == true ]] && _CFLAGS="${_CFLAGS} -g -feliminate-unused-debug-types -fasynchronous-unwind-tables"
 
 # Add PGO flags if present
 if [[ "$BUILD_STAGE" == "stage1" ]]; then
