@@ -173,8 +173,8 @@ function buildProcess()
             llvm-profdata merge -output=${_PB_PGO_DIR}/combined.profdata ${_PB_PGO_DIR}/ir.profdata ${_PB_PGO_DIR}/CS/default*.profraw
         fi
     fi
-    freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
     BUILD_STAGE=final
+    freshBuildEnvironment || serpentFail "Failed to setup clean workdir environment"
 
     [[ ! -z $stepSetup ]] && setupStep setup-$BUILD_STAGE
     [[ ! -z $stepSetup ]] && executeStep $stepSetup
